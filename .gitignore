@@ -1,0 +1,11 @@
+# Device dumps hold serials, MAC addresses, phone numbers and Wi-Fi names: keep them out of git.
+backup/
+snapshots/
+work/
+applied-*.txt
+*.apk
+*.jks
+*.keystore
+build/
+.DS_Store
+__pycache__/

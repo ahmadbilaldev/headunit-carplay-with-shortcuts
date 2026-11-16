@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="dev.bilal.voicekey" android:versionCode="4" android:versionName="1.3">
+    <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="28"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <application android:label="Voice Key" android:icon="@android:drawable/ic_btn_speak_now" android:allowBackup="false">
+        <activity android:name=".Start" android:theme="@android:style/Theme.NoDisplay" android:exported="true">
+            <intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter>
+        </activity>
+        <service android:name=".KeyService" android:exported="false"/>
+        <service android:name=".FrontTap" android:exported="true" android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter><action android:name="android.accessibilityservice.AccessibilityService"/></intent-filter>
+            <meta-data android:name="android.accessibilityservice" android:resource="@xml/front_tap"/>
+        </service>
+        <receiver android:name=".Boot" android:exported="true">
+            <intent-filter><action android:name="android.intent.action.BOOT_COMPLETED"/></intent-filter>
+        </receiver>
+    </application>
+</manifest>
