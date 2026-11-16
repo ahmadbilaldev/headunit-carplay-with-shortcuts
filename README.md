@@ -1,4 +1,4 @@
-# headunit-carplay-voicekey
+# headunit-carplay-with-shortcuts
 
 Two things an aftermarket Android head unit could already do but shipped without:
 
@@ -7,7 +7,7 @@ Two things an aftermarket Android head unit could already do but shipped without
 2. **Steering-wheel voice button shortcuts**: single press for the front camera, double press for
    CarPlay, long press for Home. An ordinary app, no root, no system signing.
 
-Worked out on a **BWIC "Yato1 B100"** unit (Autochips AC8257, Android 9, `OS_Yato1_B100_01_V2.00.23`).
+Worked out on a **2023 Honda Civic RS Turbo** fitted with a **BWIC "Yato1 B100"** head unit (Autochips AC8257, Android 9, `OS_Yato1_B100_01_V2.00.23`).
 The debloat, launcher, icons and widgets for the same unit are in
 [clean-your-headunit-skill](https://github.com/ahmadbilaldev/clean-your-headunit-skill). Do that first:
 it has the snapshot and the list of packages that must never be disabled.
@@ -176,8 +176,8 @@ single early click on the front icon is silently dropped.
 ## Use the skill
 
 ```bash
-git clone https://github.com/ahmadbilaldev/headunit-carplay-voicekey
-cp -r headunit-carplay-voicekey/headunit-carplay-voicekey ~/.claude/skills/
+git clone https://github.com/ahmadbilaldev/headunit-carplay-with-shortcuts
+cp -r headunit-carplay-with-shortcuts/headunit-carplay-with-shortcuts ~/.claude/skills/
 ```
 
 Then ask Claude Code to "enable CarPlay on my head unit" or "remap my steering wheel voice button".

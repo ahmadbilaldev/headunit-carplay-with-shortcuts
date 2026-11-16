@@ -1,5 +1,5 @@
 ---
-name: headunit-carplay-voicekey
+name: headunit-carplay-with-shortcuts
 description: Enable native wired Apple CarPlay on an aftermarket Autochips / BWIC Android head unit that already has the Apple MFi chip, and remap steering-wheel buttons (voice key single, double and long press) to open apps or cameras, all over ADB without root. Use this whenever someone asks to get CarPlay working on their car's Android screen without a dongle, asks why CarPlay "isn't showing" on an Android head unit, or wants a steering-wheel or panel button on such a unit to do something else, such as open a camera, maps or CarPlay.
 ---
 
