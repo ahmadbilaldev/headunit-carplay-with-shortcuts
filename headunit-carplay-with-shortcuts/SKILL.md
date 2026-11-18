@@ -75,5 +75,5 @@ button or plugging in the real phone. Read the repo README for the full findings
 ## Finish
 
 Record each installed app with its undo line. Tell the owner what is confirmed, what is untested
-(usually Siri, calls, behaviour after a cold boot), and that the unit's open ADB port should stay off
-networks they do not control.
+(usually Siri, calls, behaviour after a cold boot), and remind them to switch network debugging off
+when finished if the unit offers that setting.

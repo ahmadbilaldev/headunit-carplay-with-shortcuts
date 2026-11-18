@@ -183,8 +183,8 @@ single early click on the front icon is silently dropped.
 
 - Everything here is reversible with the undo lines above. Nothing was flashed and no system package
   was removed.
-- This unit's ADB port is open to the whole Wi-Fi network with no authentication. Keep it off networks
-  you do not control.
+- Do this work on your own home Wi-Fi, and switch network debugging off when you are finished if your
+  unit offers that setting.
 - The voice-key app can see only the keys it registers for, and its accessibility service is limited
   to the camera app.
 
