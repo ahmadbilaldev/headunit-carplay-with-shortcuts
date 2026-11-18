@@ -38,6 +38,25 @@ public class KeyService extends Service implements ServiceConnection {
             .setContentTitle("Voice key opens camera").build());
         listener = new Listener(this);
         bind();
+        restoreHelpers();
+    }
+
+    /** The firmware's shutdown force-stop clears our accessibility setting and stops the CarPlay watcher. */
+    void restoreHelpers() {
+        try {
+            String me = getPackageName() + "/" + FrontTap.class.getName();
+            android.content.ContentResolver cr = getContentResolver();
+            String cur = android.provider.Settings.Secure.getString(cr, "enabled_accessibility_services");
+            if (cur == null || !cur.contains(me)) {
+                android.provider.Settings.Secure.putString(cr, "enabled_accessibility_services", cur == null || cur.isEmpty() ? me : cur + ":" + me);
+                android.provider.Settings.Secure.putInt(cr, "accessibility_enabled", 1);
+                Log.e(TAG, "front-tap helper re-enabled");
+            }
+        } catch (Exception e) { Log.e(TAG, "cannot re-enable helper (grant WRITE_SECURE_SETTINGS)", e); }
+        try {   // explicit broadcast reaches a stopped app; its boot receiver starts the CarPlay watcher
+            sendBroadcast(new Intent("dev.bilal.voicekey.WAKE").setComponent(new ComponentName("app.carplayscreen", "app.carplayscreen.Watcher$Boot"))
+                .addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES | Intent.FLAG_RECEIVER_FOREGROUND));
+        } catch (Exception e) { Log.e(TAG, "carplay wake failed", e); }
     }
 
     void bind() {

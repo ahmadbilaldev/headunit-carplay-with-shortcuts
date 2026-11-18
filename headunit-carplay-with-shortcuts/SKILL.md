@@ -63,7 +63,13 @@ button or plugging in the real phone. Read the repo README for the full findings
    service: one package, armed only for a few seconds after a press, and looping until a visible state
    proves the result (here: the front icon becomes disabled). Enable it with
    `settings put secure enabled_accessibility_services`.
-7. **Multi-press.** Count releases and fire after a 350 ms gap; arm a 600 ms timer on key-down for a
+7. **Make it survive a restart.** Many head units force-stop third-party apps at shutdown, so
+   `BOOT_COMPLETED` never arrives and accessibility settings are cleared. Check
+   `dumpsys package <pkg> | grep stopped=` after a real restart. Anchor the app with something the
+   system re-binds (a notification listener enabled with `cmd notification allow_listener`), and have
+   it repair its own settings (`pm grant <pkg> android.permission.WRITE_SECURE_SETTINGS`). Do not call
+   the job done until it has worked after a restart.
+8. **Multi-press.** Count releases and fire after a 350 ms gap; arm a 600 ms timer on key-down for a
    long press. Tell the owner single presses now wait for the gap.
 
 ## Finish

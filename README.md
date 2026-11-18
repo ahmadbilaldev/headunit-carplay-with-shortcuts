@@ -137,7 +137,7 @@ app bundles the car client library, including the AIDL stubs with their transact
 | Long press (600 ms, fires while held) | Home |
 
 - `KeyService` binds to the car service, registers for key 1050 at high priority, and counts presses.
-  It runs as a foreground service and starts at boot.
+  It runs as a foreground service.
 - `FrontTap` exists because the vendor camera app always opens on the reverse camera and has no way to
   ask for another one. It is an accessibility service scoped to `com.bw.adas`, armed for 15 seconds
   after a press. It taps the picture to reveal the three camera icons and presses the front one.
@@ -149,14 +149,29 @@ app bundles the car client library, including the AIDL stubs with their transact
 
 ```bash
 apps/voicekey/build.sh /tmp/voicekey && adb install -r /tmp/voicekey/VoiceKey.apk
-adb shell settings put secure enabled_accessibility_services dev.bilal.voicekey/dev.bilal.voicekey.FrontTap
-adb shell settings put secure accessibility_enabled 1
-adb shell am start -n dev.bilal.voicekey/.Start
+adb shell pm grant dev.bilal.voicekey android.permission.WRITE_SECURE_SETTINGS
+adb shell cmd notification allow_listener dev.bilal.voicekey/dev.bilal.voicekey.Wake
 adb logcat -s VoiceKey      # "registered for voice key", then one line per press
 ```
 
 Undo: `pm uninstall dev.bilal.voicekey`, `settings delete secure enabled_accessibility_services`,
 `settings put secure accessibility_enabled 0`.
+
+### Surviving a restart
+
+This firmware **force-stops every third-party app at shutdown**. A force-stopped app receives no
+`BOOT_COMPLETED`, and the force-stop also clears its accessibility setting, so the first version stopped
+working after the car was restarted. The same happens to the CarPlay screen app's watcher.
+
+What does come back is anything the system itself binds. So the app has:
+
+- `Wake`, a notification listener that ignores notifications and exists only so the system re-binds
+  the app at boot. It starts `KeyService`.
+- `KeyService.restoreHelpers()`, which switches the accessibility helper back on (that is what the
+  `WRITE_SECURE_SETTINGS` grant is for) and sends an explicit broadcast to the CarPlay screen app's
+  boot receiver, which wakes a stopped app, so CarPlay auto-open works again.
+
+Check with `adb shell dumpsys package <pkg> | grep stopped=` after a restart.
 
 To change the actions, edit `onVoiceKey`, `onDoublePress` and `onLongPress` in `KeyService.java`. To
 handle another key, add its code to the array passed at registration.
